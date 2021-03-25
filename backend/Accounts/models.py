@@ -33,8 +33,8 @@ class MyAccountManager(BaseUserManager):
 
 class Users(AbstractBaseUser):
     username = models.CharField( max_length= 700, unique=True)
-    firstName = models.CharField(verbose_name= 'First Name', blank = True, max_length= 700)
-    lastName = models.CharField(verbose_name= 'Last Name', blank= True, max_length= 700)
+    first_name = models.CharField(verbose_name= 'First Name', blank = True, max_length= 700)
+    last_name = models.CharField(verbose_name= 'Last Name', blank= True, max_length= 700)
     email = models.EmailField(blank = True, max_length= 700)
     is_verified = models.BooleanField(default= False)
     is_admin = models.BooleanField(default= False)
