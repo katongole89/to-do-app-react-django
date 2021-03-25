@@ -37,9 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #third party app
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    #local apps
+    'Accounts',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,7 +76,17 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'Accounts.Users'
+
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+
+    'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
+}
 
 
 # Database
