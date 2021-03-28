@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
     #local apps
     'Accounts',
+    'Auth',
+    'base',
 ]
 
 MIDDLEWARE = [

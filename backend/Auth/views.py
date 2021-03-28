@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import loginSerializer
+from .serializers import loginSerializer, registrationSerializer
 from Accounts.models import Users
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -25,5 +25,16 @@ class login(APIView):
             else:
                 data = {'detail': 'wrong crudentials'}
                 return Response(data, status=alt_status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=alt_status.HTTP_400_BAD_REQUEST)
+
+class registration(APIView):
+    def post(self,request):
+        serializer = registrationSerializer(data= request.data)
+        if serializer.is_valid(raise_exception=True):
+            account = serializer.save()
+            data = make_auth_response_data(account)
+            return Response(data, status= alt_status.HTTP_200_OK)
+        return Response(serializer.errors, status=alt_status.HTTP_400_BAD_REQUEST)
+
+
 
