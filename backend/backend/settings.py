@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Accounts',
     'Auth',
     'base',
+    'Actions'
 ]
 
 MIDDLEWARE = [
