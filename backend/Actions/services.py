@@ -1,4 +1,4 @@
-
+from rest_framework.authtoken.models import Token
 
 def returnUserFromToken(request):
     authToken = request.META.get('HTTP_AUTHORIZATION')
