@@ -10,14 +10,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from .models import ToDo
 from .serializers import ToDoSerializer
+from .services import returnUserFromToken
 # Create your views here.
 class listToDos(APIView):
     permission_classes = (IsAuthenticated,)   
     def get(self,request):
-        authToken = request.META.get('HTTP_AUTHORIZATION')
-        authToken = authToken.replace("Token ", "")
-        person = Token.objects.get(key = authToken ).user
-        print(person)
+        person = returnUserFromToken(request)
         #query data
         queryToDos = ToDo.objects.filter(user = person)
         serializer = ToDoSerializer(queryToDos, many=True)
