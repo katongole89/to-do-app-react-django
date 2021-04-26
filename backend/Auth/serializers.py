@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from Accounts.models import Users
-from Accounts.services import usernameValidator
+from Accounts.services import usernameValidator, usernameExists
 
 class loginSerializer(serializers.Serializer):
     
@@ -30,6 +30,7 @@ class registrationSerializer(serializers.Serializer):
     def save(self):
         username = self.validated_data['username']
         usernameValidator(username)
+        usernameExists(username)
 
         account = Users(
             username = username,
