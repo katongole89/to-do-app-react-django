@@ -30,6 +30,9 @@ const reducer = (state, action)=>{
         }
         return{...state, errors:errors}
     }
+    if (action.type ==='SERVER_ERRORS'){
+        return{...state, serverErrors:action.payload}
+    }    
 
 }
 
@@ -51,13 +54,15 @@ const defaultState = {
         firstName: false,
         lastName: false,
         password: false
-    }
+    },
+    'serverErrors':{
+    'usernameInUse': false,
+    'specialCharacters': false}
 }
 
 function Register(){
     //set cookie
     const[User, setUser] = useCookies(['currentUser'])
-    console.log('user is', User)
     //set state
     const [state, dispatch] = useReducer(reducer, defaultState)
     let history = useHistory()
@@ -151,13 +156,23 @@ function Register(){
                     setUser('currentUser', result, {
                         maxAge:3600
                     })
-                    console.log(result)
                     dispatch({type:'RESET_INPUT'})
-                    //redirect to main
-
-
+                    history.push('/')
+                    
                 }else{
-                    console.log(result)
+                    //server errors
+                    let serverErrors = state.serverErrors
+                    if('detail' in result){
+                        if(result.detail === 'username in use'){
+                            serverErrors ={...serverErrors, usernameInUse:true, specialCharacters:false}
+                            dispatch({type:'SERVER_ERRORS', payload: serverErrors})
+                        }
+                        else{
+                            serverErrors = {...serverErrors, specialCharacters:true, usernameInUse:false}
+                            dispatch({type:'SERVER_ERRORS', payload: serverErrors})
+                        }
+                    }
+            
                 }
                                 
             })
@@ -175,6 +190,8 @@ function Register(){
      
     }
 
+    /*
+
     useEffect(()=>{
         console.log('push triggered')
         console.log(User['currentUser'])
@@ -182,6 +199,8 @@ function Register(){
             history.push('/')
         }
     }, [User])
+
+    */
 
     
     return(
@@ -191,6 +210,8 @@ function Register(){
                 <span>Username</span><br/>
                 <input placeholder='username' name='username' value={state.username} onChange={handleOnChange} /><br/>
                 {state.errors.username?<div><span>invalid Username</span><br/></div>: null}
+                {state.serverErrors.usernameInUse?<div><span>Username already in use</span><br/></div>: null}
+                {state.serverErrors.specialCharacters?<div><span>Username must contain atleast a special Characters,a number, and a capital letter</span><br/></div>: null}
                 <span>Email</span><br/>
                 <input placeholder='email' name='email' value={state.email} onChange={handleOnChange}/><br/>
                 {state.errors.email?<div><span>invalid Email</span><br/></div>: null}
