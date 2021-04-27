@@ -5,27 +5,28 @@ import Login from './login'
 import Register from './register'
 import Main from './main'
 import ErrorPage from './ErrorPage';
+import {CookiesProvider} from 'react-cookie'
 
 function App() {
-  return <Router>
-    <Switch>
-      <Route exact path='/'>
-        <Main />
-      </Route>
-      
-      <Route exact path='/login'>
-        <Login />
-      </Route>
-      <Route exact path='/register'>
-        <Register />
-      </Route>
+  return <CookiesProvider>
+    <Router>
+      <Switch>
+        <Route exact path='/'>
+          <Main />
+        </Route>
+        <Route exact path='/login'>
+          <Login />
+        </Route>
+        <Route exact path='/register'>
+          <Register />
+        </Route>
+        <Route path='*'>
+          <ErrorPage />
+        </Route>
+      </Switch> 
 
-      <Route path='*'>
-        <ErrorPage />
-      </Route>
-    </Switch> 
-
-  </Router>
+    </Router>
+  </CookiesProvider>
 }
 
 export default App

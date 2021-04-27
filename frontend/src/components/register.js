@@ -1,4 +1,6 @@
 import React, {useReducer, useState, useEffect} from "react"
+import {useCookies} from 'react-cookie'
+import {useHistory} from 'react-router-dom'
 
 const reducer = (state, action)=>{
     if(action.type==='INPUT_CHANGE'){
@@ -53,57 +55,13 @@ const defaultState = {
 }
 
 function Register(){
-
-    const[testUseState, setTestUseState] = useState(true) 
-     
+    //set cookie
+    const[User, setUser] = useCookies(['currentUser'])
+    console.log('user is', User)
+    //set state
     const [state, dispatch] = useReducer(reducer, defaultState)
+    let history = useHistory()
 
-    /*
-
-    useEffect(()=>{
-        if(!state.emailInvalid && !state.invalidFirstName && !state.invalidLastName && !state.invalidPassword && !state.invalidUsername && state.username){
-            console.log('submit is possible')
-            let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            
-            let raw = JSON.stringify({"username":state.username,"password":state.password,"first_name":state.firstName,"last_name":state.lastName,"email":state.email});
-            
-            let requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            let status
-            
-            fetch("http://127.0.0.1:8000/auth/registration/", requestOptions)
-            .then(response =>{
-                status = response.status
-                return response.json()
-            })
-            .then(result => {
-                if(status === 400 ){
-                    console.log(result)
-                    dispatch({type:"RESET"})
-                }else{
-                    console.log(result)
-                    dispatch({type:'RESET_INPUT'})
-                    dispatch({type:"RESET"})
-
-                }
-                
-            })
-                
-            .catch(error => console.log('error', error));
-
-            
-        }
-        
-        
-
-    }, [state.submit])
-
-    */
     
     function handleOnChange(event){
         dispatch({type:'INPUT_CHANGE', payload: {name:event.target.name, value:event.target.value}})
@@ -189,8 +147,15 @@ function Register(){
             .then(result => {
                 if('auth_token' in result){
                     console.log('USER WAS REGISTERED')
+                    //create cookie storing user's info---- should expire after sometime
+                    setUser('currentUser', result, {
+                        maxAge:3600
+                    })
                     console.log(result)
                     dispatch({type:'RESET_INPUT'})
+                    //redirect to main
+
+
                 }else{
                     console.log(result)
                 }
@@ -210,7 +175,13 @@ function Register(){
      
     }
 
-    console.log(state)
+    useEffect(()=>{
+        console.log('push triggered')
+        console.log(User['currentUser'])
+        if(User['currentUser']){
+            history.push('/')
+        }
+    }, [User])
 
     
     return(
