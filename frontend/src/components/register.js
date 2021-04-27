@@ -189,6 +189,7 @@ function Register(){
             .then(result => {
                 if('auth_token' in result){
                     console.log('USER WAS REGISTERED')
+                    console.log(result)
                     dispatch({type:'RESET_INPUT'})
                 }else{
                     console.log(result)
