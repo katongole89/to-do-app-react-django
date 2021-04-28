@@ -43,3 +43,22 @@ class updateIsDone(APIView):
             'status': 'success'
         }
         return Response(data, status= alt_status.HTTP_200_OK)
+
+class deleteAct(APIView):
+    permission_classes = (IsAuthenticated,)   
+    def get(self,request, id):
+        person = returnUserFromToken(request)
+        #query data
+        try:
+            queryToDos = ToDo.objects.get(user = person, id=id)
+        except:
+            data ={
+                'status': 'failed'
+            }
+            return Response(data, status= alt_status.HTTP_401_UNAUTHORIZED)
+        queryToDos = ToDo.objects.filter(user = person, id=id).delete()
+        
+        data={
+            'status': 'success'
+        }
+        return Response(data, status= alt_status.HTTP_200_OK)

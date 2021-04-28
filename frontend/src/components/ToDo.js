@@ -7,7 +7,7 @@ function ToDo(props){
                 <span>{props.data.category}</span><br/>
                 <span>{props.data.text}</span><br/>
                 <input type='checkbox'checked={props.data.isDone}   onChange={()=>props.handleChecked(props.data.id)} /><br/>
-                <button>remove</button>
+                <button onClick={()=>props.handleRemove(props.data.id)}>remove</button>
             </p>
 
         </div>

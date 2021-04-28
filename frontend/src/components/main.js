@@ -59,7 +59,7 @@ function Main(){
 
     
     let list = state.toDoList
-    const allActions = list.map((act,index)=> <ToDo key={index} data={act} handleChecked={handleChecked} />)
+    const allActions = list.map((act,index)=> <ToDo key={index} data={act} handleChecked={handleChecked} handleRemove={handleRemove}/>)
 
     function handleChecked(id){
         const updateList = state.toDoList.map((act)=>{
@@ -87,6 +87,16 @@ function Main(){
 
         })
         .catch(error => console.log('error', error));
+
+    }
+
+    function handleRemove(id){
+        const UpdatedList = state.toDoList.filter((act)=>{
+            if(act.id !== id){
+                return act
+            }
+        })
+        dispatch({type:'UPDATE_LIST', payload:UpdatedList})
 
     }
 
