@@ -29,7 +29,10 @@ class updateIsDone(APIView):
         try:
             queryToDos = ToDo.objects.get(user = person, id=id)
         except:
-            data ={}
+            data ={
+                'status': 'failed'
+            }
+            return Response(data, status= alt_status.HTTP_401_UNAUTHORIZED)
 
         if queryToDos.isDone:
             queryToDos = ToDo.objects.filter(user = person, id=id).update(isDone=False)

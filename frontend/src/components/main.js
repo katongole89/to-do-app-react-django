@@ -69,7 +69,24 @@ function Main(){
             return act
         })
 
-        dispatch({type:'UPDATE_LIST', payload:updateList})
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Token ${User.currentUser.auth_token}`);
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch(`http://127.0.0.1:8000/actions/updateIsDone/${id}/`, requestOptions)
+        .then(response => response.json())
+        .then(result =>{
+            if(result.status === 'success'){
+                dispatch({type:'UPDATE_LIST', payload:updateList})
+            }else{
+                console.log(result)
+            }
+
+        })
+        .catch(error => console.log('error', error));
 
     }
 
