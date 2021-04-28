@@ -20,3 +20,23 @@ class listToDos(APIView):
         queryToDos = ToDo.objects.filter(user = person)
         serializer = ToDoSerializer(queryToDos, many=True)
         return Response(serializer.data, status= alt_status.HTTP_200_OK)
+
+class updateIsDone(APIView):
+    permission_classes = (IsAuthenticated,)   
+    def get(self,request, id):
+        person = returnUserFromToken(request)
+        #query data
+        try:
+            queryToDos = ToDo.objects.get(user = person, id=id)
+        except:
+            data ={}
+
+        if queryToDos.isDone:
+            queryToDos = ToDo.objects.filter(user = person, id=id).update(isDone=False)
+        else:
+            queryToDos = ToDo.objects.filter(user = person, id=id).update(isDone=True)
+
+        data={
+            'status': 'success'
+        }
+        return Response(data, status= alt_status.HTTP_200_OK)

@@ -5,4 +5,4 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ('id', 'category', 'text')
+        fields = ('id', 'category', 'text','isDone')

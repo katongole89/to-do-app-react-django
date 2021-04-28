@@ -5,14 +5,14 @@ import ToDo from './ToDo'
 
 
 const reducer = (state, action)=>{
-    if(action.type==="GET_TODO_LIST"){
+    if(action.type==="UPDATE_LIST"){
         return{...state, toDoList:action.payload}
     }
 
 }
 
 const defaultState ={
-    toDoList: [1],
+    toDoList: [],
 }
 
 
@@ -43,14 +43,12 @@ function Main(){
         .then(result => {
             console.log("result")
             console.log(result)
-            dispatch({type:'GET_TODO_LIST', payload:result})      
+            dispatch({type:'UPDATE_LIST', payload:result})      
         })
         .catch(error => console.log('error', error));
         
     }, [])
 
-    let list = state.toDoList
-    const allActions = list.map((act,index)=> <ToDo key={index} data={act}/>)
     
     //check log in status
     if(!User.currentUser){
@@ -58,7 +56,22 @@ function Main(){
         history.push('/login')
         return(<div></div>)
     }
+
     
+    let list = state.toDoList
+    const allActions = list.map((act,index)=> <ToDo key={index} data={act} handleChecked={handleChecked} />)
+
+    function handleChecked(id){
+        const updateList = state.toDoList.map((act)=>{
+            if(act.id === id){
+                act.isDone = !act.isDone
+            }
+            return act
+        })
+
+        dispatch({type:'UPDATE_LIST', payload:updateList})
+
+    }
 
 
     return(
