@@ -175,32 +175,12 @@ function Register(){
             
                 }
                                 
-            })
-                
-            .catch(error => console.log('error', error));
-
-            
+            })                
+            .catch(error => console.log('error', error));            
         }else{
             dispatch({type:'CHECK_ERRORS', payload:errors})
-        }
-
-//#######################################################
-   
-        
-     
+        }  
     }
-
-    /*
-
-    useEffect(()=>{
-        console.log('push triggered')
-        console.log(User['currentUser'])
-        if(User['currentUser']){
-            history.push('/')
-        }
-    }, [User])
-
-    */
 
     
     return(
